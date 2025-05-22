@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>No Reward Card</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 40px;
+      background: #f5f5f5;
+    }
+    .scratch-container {
+      position: relative;
+      display: inline-block;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .reward-message {
+      width: 300px;
+      height: 100px;
+      background: white;
+      line-height: 100px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #999;
+      border: 2px dashed #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h2>Scratch to See Your Reward</h2>
+  <div class="scratch-container">
+    <div class="reward-message" id="rewardText">No Reward 😢</div>
+    <canvas id="scratchCanvas" width="300" height="100"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('scratchCanvas');
+    const ctx = canvas.getContext('2d');
+    const rewardText = document.getElementById('rewardText');
+    let isDrawing = false;
+
+    ctx.fillStyle = '#c0c0c0';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    canvas.addEventListener('mousedown', e => isDrawing = true);
+    canvas.addEventListener('mouseup', e => isDrawing = false);
+    canvas.addEventListener('mouseout', e => isDrawing = false);
+    canvas.addEventListener('mousemove', draw);
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  </script>
+</body>
+</html>
